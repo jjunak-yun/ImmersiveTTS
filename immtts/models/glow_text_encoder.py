@@ -4,7 +4,7 @@ import math
 import torch
 import numpy as np
 
-from imflow.data.data_utils import sequence_mask, convert_pad_shape
+from immtts.data.data_utils import sequence_mask, convert_pad_shape
 
 class BaseModule(torch.nn.Module):
     def __init__(self):
