@@ -1,0 +1,864 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Anonymous Demo</title>
+
+  <style>
+    :root{
+      /* 다홍/코랄 계열 포인트 컬러 */
+      --accent: #ff5a5f;
+      --accent-2: #ff7a7e;
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #ffffff;
+      --card: #ffffff;
+      --shadow: 0 10px 25px rgba(0,0,0,0.06);
+      --radius: 16px;
+      --maxw: 1060px;
+    }
+
+    *{ box-sizing: border-box; }
+    html{ scroll-behavior: smooth; }
+    body{
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.55;
+    }
+
+    a{ color: inherit; text-decoration: none; }
+    .wrap{ max-width: var(--maxw); margin: 0 auto; padding: 42px 20px 80px; }
+
+    /* Header */
+    .hero{
+      padding: 10px 0 22px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-header{
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 6px;
+    }
+    .title{
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 0;
+      flex: 1;
+    }
+    .subtitle{
+      margin: 0;
+      font-size: 18px;     /* 기존 14px -> 키움 */
+      color: #000000;      /* 검정 */
+      font-weight: 700;    /* 약간 굵게 */
+    }
+    .subtitle .dot{ display:none; }  /* 다홍색 원 제거 */
+    
+    .button-group{
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .github-btn, .paper-btn{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .github-btn:hover, .paper-btn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,90,95,0.45);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      color: var(--accent);
+    }
+    .paper-btn{
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+    .paper-btn:hover{
+      opacity: 0.9;
+    }
+    .github-icon, .paper-icon{
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+    
+    @media (max-width: 860px){
+      .hero-header{
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+
+    /* Section */
+    section{ padding: 28px 0; }
+    .sec-head{
+      display:flex; align-items: baseline; gap: 10px;
+      margin: 0 0 12px;
+    }
+    .sec-title{
+      font-size: 18px;
+      font-weight: 800;
+      margin: 0;
+    }
+    .sec-title::before{
+      content:"";
+      display:inline-block;
+      width: 10px; height: 10px;
+      background: var(--accent);
+      border-radius: 999px;
+      margin-right: 10px;
+      transform: translateY(-1px);
+    }
+    .sec-note{
+      margin: 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* Cards */
+    .card{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+    .card + .card{ margin-top: 12px; }
+
+    /* Framework image placeholder */
+    .figure{
+      border-radius: var(--radius);
+      border: 1px solid var(--border);   /* dashed -> solid로 바꿈 (원하면 dashed로 유지해도 됨) */
+      background: #fff;
+      padding: 14px;
+      overflow: hidden;
+    }
+    .figure img{
+      width: 100%;
+      height: auto;
+      display:block;
+      border-radius: 12px;
+    }
+    .figcaption{
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .figure .placeholder{
+      padding: 34px 10px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,90,95,0.25);
+      background: rgba(255,90,95,0.08);
+      color: #8b1114;
+      margin-top: 10px;
+    }
+    .badge .pip{
+      width: 8px; height: 8px; border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px rgba(255,90,95,0.15);
+    }
+
+    /* Text-to-Audiouttons grid (2x3) */
+    .task-grid{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+    @media (max-width: 860px){
+      .task-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 520px){
+      .task-grid{ grid-template-columns: 1fr; }
+    }
+    .task-btn{
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: #fff;
+      padding: 14px 14px;
+      cursor: pointer;
+      text-align: left;
+      transition: transform .08s ease, border-color .15s ease, box-shadow .15s ease;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.04);
+    }
+    .task-btn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,90,95,0.45);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.06);
+    }
+    .task-btn.active{
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(255,90,95,0.12), 0 12px 24px rgba(0,0,0,0.06);
+    }
+    .task-name{
+      font-weight: 800;
+      margin: 0 0 4px;
+      font-size: 14px;
+      letter-spacing: -0.01em;
+    }
+    .task-desc{
+      margin: 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* Task sections */
+    .task-section{
+      scroll-margin-top: 18px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+      background: #fff;
+    }
+    .task-section + .task-section{ margin-top: 14px; }
+
+    .task-section .h{
+      display:flex; align-items:center; justify-content: space-between; gap: 12px;
+      margin-bottom: 10px;
+    }
+    .task-section .h h3{
+      margin: 0;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: -0.01em;
+    }
+    .pill{
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,90,95,0.10);
+      border: 1px solid rgba(255,90,95,0.25);
+      color: #8b1114;
+      white-space: nowrap;
+    }
+
+    /* Samples grid inside each task */
+    .samples{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .sample-card{
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      background: #fff;
+    }
+    .sample-title{
+      margin: 0 0 8px;
+      font-weight: 800;
+      font-size: 13px;
+    }
+    .sample-meta{
+      margin: 0 0 6px;
+      font-size: 12px;
+      color: #111827; /* 기본 검은색, 얇게 */
+      font-weight: 400; /* 얇게 */
+      line-height: 1.5;
+    }
+    .sample-meta .meta-label{
+      font-weight: 600 !important; /* 라벨만 굵게 */
+      display: inline-block;
+    }
+    
+    /* 텍스트 부분은 확실히 얇고 검은색으로 유지 */
+    .sample-meta {
+      color: #111827 !important;
+      font-weight: 400 !important;
+    }
+    
+    /* Transcription과 Environment Description 라벨 색상 */
+    /* Environment-Aware TTS */
+    #task-envtts .sample-card > p.sample-meta:nth-of-type(2) .meta-label{
+      color: #3b82f6 !important; /* Transcription 라벨 - 파란색 */
+    }
+    #task-envtts .sample-card > p.sample-meta:nth-of-type(3) .meta-label{
+      color: #22c55e !important; /* Environment Description 라벨 - 초록색 */
+    }
+    
+    /* Text-to-Speech (Transcription만 있음) */
+    #task-tts .sample-card > p.sample-meta:nth-of-type(2) .meta-label{
+      color: #3b82f6 !important; /* Transcription 라벨 - 파란색 */
+    }
+    
+    /* REPA Analysis (Transcription, Environment Description 모두 있음) */
+    #task-repa .sample-card > p.sample-meta:nth-of-type(2) .meta-label{
+      color: #3b82f6 !important; /* Transcription 라벨 - 파란색 */
+    }
+    #task-repa .sample-card > p.sample-meta:nth-of-type(3) .meta-label{
+      color: #22c55e !important; /* Environment Description 라벨 - 초록색 */
+    }
+
+    /* Audio rows (placeholders) */
+    .audio-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+    }
+    @media (max-width: 520px){
+      .audio-grid{ grid-template-columns: 1fr; }
+    }
+    .audio-item{
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
+      background: #fafafa;
+    }
+    .audio-label{
+      font-size: 12px;
+      font-weight: 800;
+      margin: 0 0 6px;
+      display:flex; align-items:center; gap:8px;
+    }
+    .audio-label .mini{
+      width: 8px; height: 8px; border-radius: 999px;
+      background: var(--accent);
+      transition: background-color 0.2s ease;
+    }
+    .audio-label.playing .mini{
+      background: #22c55e;
+    }
+    audio{ width: 100%; }
+
+    /* Footer */
+    .footer{
+      margin-top: 30px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 11px;
+      padding: 2px 6px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fafafa;
+      color: #374151;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <!-- ===== Header ===== -->
+    <header class="hero">
+      <div class="hero-header">
+        <h1 class="title">ImmersiveTTS: Environment-Aware Text-to-Speech with Multimodal Diffusion Transformer and Domain-Specific Representation Alignment</h1>
+      </div>
+      <p class="subtitle">Anonymous Authors</p>
+      <div class="button-group">
+        <a href="https://github.com/immersivetts/ImmersiveTTS" target="_blank" rel="noopener noreferrer" class="github-btn">
+          <svg class="github-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+          <span>Code</span>
+        </a>
+        <a href="#" class="paper-btn" onclick="return false;">
+          <svg class="paper-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+          </svg>
+          <span>Paper</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- ===== Abstract ===== -->
+    <section id="abstract">
+      <div class="sec-head">
+        <h2 class="sec-title">Abstract</h2>
+      </div>
+      <div class="card">
+        <p style="margin:0;">
+          Recent advancements in text-guided audio generation have yielded promising results in diverse domains, including sound effects, environmental audio, speech, and music. However, jointly generating speech with environmental audio remains challenging due to the inherent disparities in their acoustic patterns and temporal dynamics. We propose ImmersiveTTS, an Environment-Aware text-to-speech (TTS) model that generates natural speech seamlessly integrated within environmental contexts by explicitly modeling cross-modal interactions. Our model builds on a multimodal diffusion transformer and fuses transcript-aligned speech latent with text-conditioned environmental context via joint attention. To enhance semantic consistency, we introduce a domain-specific representation alignment objective tailored to Environment-Aware TTS, leveraging complementary self-supervised representations from speech and audio encoders. Experimental results show that ImmersiveTTS achieves higher naturalness, intelligibility, and audio fidelity than existing approaches across objective metrics and human listening tests.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== Framework Overview ===== -->
+    <section id="framework">
+      <div class="sec-head">
+        <h2 class="sec-title">Model Framework Overview</h2>
+      </div>
+
+      <figure class="figure">
+        <img src="img/overview.png" alt="Model framework overview">
+        <figcaption class="figcaption">
+          Figure 1: Overview of ImmersiveTTS. A dual-stream MM-DiT backbone conditions the speech stream on content prompt-aligned linguistic features. At the same time, Flan-T5 token embeddings drive the environmental context stream, and CLAP embeddings modulate AdaLN for global conditioning. The model is trained with flow matching and domain-specific REPA objectives.
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- ===== Text-to-Audiouttons ===== -->
+    <section id="tasks">
+      <div class="sec-head">
+        <h2 class="sec-title">Tasks</h2>
+      </div>
+
+      <div class="task-grid" id="taskGrid">
+        <button class="task-btn" data-target="task-envtts">
+          <p class="task-name">Environment-Aware Text-to-Speech</p>
+          <!-- <p class="task-desc">Qualitative samples in diverse acoustic scenes</p> -->
+        </button>
+
+        <button class="task-btn" data-target="task-tts">
+          <p class="task-name">Text-to-Speech</p>
+          <!-- <p class="task-desc">Your custom setting / benchmark A</p> -->
+        </button>
+
+        <button class="task-btn" data-target="task-repa">
+          <p class="task-name">REPA Analysis</p>
+          <!-- <p class="task-desc">REPA ablation study</p> -->
+        </button>
+      </div>
+    </section>
+
+    <!-- ===== Task Sections (each with 4 samples) ===== -->
+    <section id="results">
+      <div class="sec-head">
+        <h2 class="sec-title">Examples</h2>
+        <!-- <p class="sec-note">Each task has 4 samples (edit captions and audio paths).</p> -->
+      </div>
+
+      <!-- Environment-Aware TTS -->
+      <div class="task-section" id="task-envtts">
+        <div class="h">
+          <h3>Environment-Aware Text-to-Speech</h3>
+          <!-- <span class="pill">4 samples</span> -->
+        </div>
+
+        <div class="samples">
+          <!-- sample 1 -->
+          <div class="sample-card">
+            <p class="sample-title">Sample 1</p>
+            <p class="sample-meta"><span class="meta-label">Transcription:</span> "Pretty smart she probably she snaps at them."</p>
+            <p class="sample-meta"><span class="meta-label">Environment Description:</span> "Birds chirping with leaves rustling and wind"</p>
+            <div class="audio-grid">
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>Ground Truth</p>
+                <audio controls src="audio/envtts/gt/bygBWUkpaC8_103351.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>Reconstructed</p>
+                <audio controls src="audio/envtts/recon/bygBWUkpaC8_103351.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>VoiceLDM</p>
+                <audio controls src="audio/envtts/voiceldm/bygBWUkpaC8_103351.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>VoiceDiT</p>
+                <audio controls src="audio/envtts/voicedit/bygBWUkpaC8_103351.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>ImmersiveTTS (Ours)</p>
+                <audio controls src="audio/envtts/immersivetts/bygBWUkpaC8_103351.wav"></audio>
+              </div>
+            </div>
+          </div>
+
+          <!-- sample 2 -->
+          <div class="sample-card">
+            <p class="sample-title">Sample 2</p>
+            <p class="sample-meta"><span class="meta-label">Transcription:</span> "Okay, let's go look at the paper."</p>
+            <p class="sample-meta"><span class="meta-label">Environment Description:</span> "Rapid and repeated gunfire"</p>
+            <div class="audio-grid">
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>Ground Truth</p>
+                <audio controls src="audio/envtts/gt/Ff8bCCJfVX4_105720.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>Reconstructed</p>
+                <audio controls src="audio/envtts/recon/Ff8bCCJfVX4_105720.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>VoiceLDM</p>
+                <audio controls src="audio/envtts/voiceldm/Ff8bCCJfVX4_105720.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>VoiceDiT</p>
+                <audio controls src="audio/envtts/voicedit/Ff8bCCJfVX4_105720.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>ImmersiveTTS (Ours)</p>
+                <audio controls src="audio/envtts/immersivetts/Ff8bCCJfVX4_105720.wav"></audio>
+              </div>
+            </div>
+          </div>
+
+          <!-- sample 3 -->
+          <div class="sample-card">
+            <p class="sample-title">Sample 3</p>
+            <p class="sample-meta"><span class="meta-label">Transcription:</span> "Second gear the car doesn't spool up too quick anymore because of the turbo and"</p>
+            <p class="sample-meta"><span class="meta-label">Environment Description:</span> "A vehicle accelerating"</p>
+            <div class="audio-grid">
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>Ground Truth</p>
+                <audio controls src="audio/envtts/gt/B4SZwi9Ce3o_103008.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>Reconstructed</p>
+                <audio controls src="audio/envtts/recon/B4SZwi9Ce3o_103008.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>VoiceLDM</p>
+                <audio controls src="audio/envtts/voicedit/B4SZwi9Ce3o_103008.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>VoiceDiT</p>
+                <audio controls src="audio/envtts/voiceldm/B4SZwi9Ce3o_103008.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>ImmersiveTTS (Ours)</p>
+                <audio controls src="audio/envtts/immersivetts/B4SZwi9Ce3o_103008.wav"></audio>
+              </div>
+            </div>
+          </div>
+
+          <!-- sample 4 -->
+          <div class="sample-card">
+            <p class="sample-title">Sample 4</p>
+            <p class="sample-meta"><span class="meta-label">Transcription:</span> "Just like that and get a glass out"</p>
+            <p class="sample-meta"><span class="meta-label">Environment Description:</span> "Dishes clanking and doors banging"</p>
+            <div class="audio-grid">
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>Ground Truth</p>
+                <audio controls src="audio/envtts/gt/xUWSHYoslPQ_107298.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>Reconstructed</p>
+                <audio controls src="audio/envtts/recon/xUWSHYoslPQ_107298.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>VoiceLDM</p>
+                <audio controls src="audio/envtts/voicedit/xUWSHYoslPQ_107298.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>VoiceDiT</p>
+                <audio controls src="audio/envtts/voiceldm/xUWSHYoslPQ_107298.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>ImmersiveTTS (Ours)</p>
+                <audio controls src="audio/envtts/immersivetts/xUWSHYoslPQ_107298.wav"></audio>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Text-to-Speech -->
+      <div class="task-section" id="task-tts">
+        <div class="h">
+          <h3>Text-to-Speech</h3>
+          <!-- <span class="pill">4 samples</span> -->
+        </div>
+        <div class="samples">
+          <!-- sample 1 -->
+          <div class="sample-card">
+            <p class="sample-title">Sample 1</p>
+            <p class="sample-meta"><span class="meta-label">Transcription:</span> "The boy from the house is coming up for the rector."</p>
+            <div class="audio-grid">
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>Ground Truth</p>
+                <audio controls src="audio/tts/gt/1089_134686_000018_000000.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>Reconstructed</p>
+                <audio controls src="audio/tts/recon/1089_134686_000018_000000.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>VoiceLDM</p>
+                <audio controls src="audio/tts/voiceldm/1089_134686_000018_000000.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>VoiceDiT</p>
+                <audio controls src="audio/tts/voicedit/1089_134686_000018_000000.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>ImmersiveTTS (Ours)</p>
+                <audio controls src="audio/tts/immersivetts/1089_134686_000018_000000.wav"></audio>
+              </div>
+            </div>
+          </div>
+
+          <!-- sample 2 -->
+          <div class="sample-card">
+            <p class="sample-title">Sample 2</p>
+            <p class="sample-meta"><span class="meta-label">Transcription:</span> "You represented a divinity, beautiful, disdainful, inconstant."</p>
+            <div class="audio-grid">
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>Ground Truth</p>
+                <audio controls src="audio/tts/gt/7127_75947_000014_000000.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>Reconstructed</p>
+                <audio controls src="audio/tts/recon/7127_75947_000014_000000.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>VoiceLDM</p>
+                <audio controls src="audio/tts/voiceldm/7127_75947_000014_000000.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>VoiceDiT</p>
+                <audio controls src="audio/tts/voicedit/7127_75947_000014_000000.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>ImmersiveTTS (Ours)</p>
+                <audio controls src="audio/tts/immersivetts/7127_75947_000014_000000.wav"></audio>
+              </div>
+            </div>
+          </div>
+
+          <!-- sample 3 -->
+          <div class="sample-card">
+            <p class="sample-title">Sample 3</p>
+            <p class="sample-meta"><span class="meta-label">Transcription:</span> ""Half past ten," said the captain, looking at his watch."</p>
+            <div class="audio-grid">
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>Ground Truth</p>
+                <audio controls src="audio/tts/gt/8455_210777_000072_000000.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>Reconstructed</p>
+                <audio controls src="audio/tts/recon/8455_210777_000072_000000.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>VoiceLDM</p>
+                <audio controls src="audio/tts/voiceldm/8455_210777_000072_000000.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>VoiceDiT</p>
+                <audio controls src="audio/tts/voicedit/8455_210777_000072_000000.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>ImmersiveTTS (Ours)</p>
+                <audio controls src="audio/tts/immersivetts/8455_210777_000072_000000.wav"></audio>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- REPA Analysis -->
+      <div class="task-section" id="task-repa">
+        <div class="h">
+          <h3>REPA Analysis</h3>
+          <!-- <span class="pill">3 samples</span> -->
+        </div>
+        <div class="samples">
+          <!-- sample 1 -->
+          <div class="sample-card">
+            <p class="sample-title">Sample 1</p>
+            <p class="sample-meta"><span class="meta-label">Transcription:</span> "Your competition chatter is more of a rolling type of chatter."</p>
+            <p class="sample-meta"><span class="meta-label">Environment Description:</span> "A duck quacks while birds chirp in the distance."</p>
+            <div class="audio-grid">
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>Ground Truth</p>
+                <audio controls src="audio/repa/gt/zIgGMlZENTs.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>Base (w/o REPA)</p>
+                <audio controls src="audio/repa/base/zIgGMlZENTs.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>w/ WavLM</p>
+                <audio controls src="audio/repa/wav/zIgGMlZENTs.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>w/ ATST-Frame</p>
+                <audio controls src="audio/repa/atst/zIgGMlZENTs.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>w/ USAD</p>
+                <audio controls src="audio/repa/usad/zIgGMlZENTs.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>w/ WavLM+USAD</p>
+                <audio controls src="audio/repa/wav_usad/zIgGMlZENTs.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>w/ USAD+ATST-Frame</p>
+                <audio controls src="audio/repa/usad_atst/zIgGMlZENTs.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>w/ WavLM+ATST-Frame</p>
+                <audio controls src="audio/repa/wav_atst/zIgGMlZENTs.wav"></audio>
+              </div>
+            </div>
+          </div>
+
+          <!-- sample 2 -->
+          <div class="sample-card">
+            <p class="sample-title">Sample 2</p>
+            <p class="sample-meta"><span class="meta-label">Transcription:</span> "Little bit of bad weather."</p>
+            <p class="sample-meta"><span class="meta-label">Environment Description:</span> "Rain falling"</p>
+            <div class="audio-grid">
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>Ground Truth</p>
+                <audio controls src="audio/repa/gt/Rp4Ct_TQvAM.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>Base (w/o REPA)</p>
+                <audio controls src="audio/repa/base/Rp4Ct_TQvAM.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>w/ WavLM</p>
+                <audio controls src="audio/repa/wav/Rp4Ct_TQvAM.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>w/ ATST-Frame</p>
+                <audio controls src="audio/repa/atst/Rp4Ct_TQvAM.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>w/ USAD</p>
+                <audio controls src="audio/repa/usad/Rp4Ct_TQvAM.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>w/ WavLM+USAD</p>
+                <audio controls src="audio/repa/wav_usad/Rp4Ct_TQvAM.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>w/ USAD+ATST-Frame</p>
+                <audio controls src="audio/repa/usad_atst/Rp4Ct_TQvAM.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>w/ WavLM+ATST-Frame</p>
+                <audio controls src="audio/repa/wav_atst/Rp4Ct_TQvAM.wav"></audio>
+              </div>
+            </div>
+          </div>
+
+          <!-- sample 3 -->
+          <div class="sample-card">
+            <p class="sample-title">Sample 3</p>
+            <p class="sample-meta"><span class="meta-label">Transcription:</span> "Nice boat."</p>
+            <p class="sample-meta"><span class="meta-label">Environment Description:</span> "A motorboat engine running followed by a plastic clank while wind blows into a microphone."</p>
+            <div class="audio-grid">
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>Ground Truth</p>
+                <audio controls src="audio/repa/gt/dP5DbAzTl5M.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>Base (w/o REPA)</p>
+                <audio controls src="audio/repa/base/dP5DbAzTl5M.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>w/ WavLM</p>
+                <audio controls src="audio/repa/wav/dP5DbAzTl5M.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>w/ ATST-Frame</p>
+                <audio controls src="audio/repa/atst/dP5DbAzTl5M.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>w/ USAD</p>
+                <audio controls src="audio/repa/usad/dP5DbAzTl5M.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>w/ WavLM+USAD</p>
+                <audio controls src="audio/repa/wav_usad/dP5DbAzTl5M.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>w/ USAD+ATST-Frame</p>
+                <audio controls src="audio/repa/usad_atst/dP5DbAzTl5M.wav"></audio>
+              </div>
+              <div class="audio-item">
+                <p class="audio-label"><span class="mini"></span>w/ WavLM+ATST-Frame</p>
+                <audio controls src="audio/repa/wav_atst/dP5DbAzTl5M.wav"></audio>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="footer">
+        ImmersiveTTS: Environment-Aware Text-to-Speech with Multimodal Diffusion Transformer and Domain-Specific Representation Alignment
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // 버튼 클릭 → 해당 섹션으로 스크롤 + 버튼 active 표시
+    const btns = Array.from(document.querySelectorAll('.task-btn'));
+
+    function setActive(targetId){
+      btns.forEach(b => b.classList.toggle('active', b.dataset.target === targetId));
+    }
+
+    btns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.target;
+        const el = document.getElementById(id);
+        if (!el) return;
+        setActive(id);
+        el.scrollIntoView({behavior:'smooth', block:'start'});
+        history.replaceState(null, '', '#' + id);
+      });
+    });
+
+    // URL hash로 들어오면 해당 버튼 active
+    function syncFromHash(){
+      const h = (location.hash || '').replace('#','');
+      if (!h) return;
+      const has = document.getElementById(h);
+      if (!has) return;
+      setActive(h);
+    }
+    window.addEventListener('hashchange', syncFromHash);
+    syncFromHash();
+
+    // 오디오 재생 중 bullet 색상 변경
+    const audioElements = document.querySelectorAll('audio');
+    audioElements.forEach(audio => {
+      const label = audio.closest('.audio-item')?.querySelector('.audio-label');
+      if (!label) return;
+
+      audio.addEventListener('play', () => {
+        label.classList.add('playing');
+      });
+
+      audio.addEventListener('pause', () => {
+        label.classList.remove('playing');
+      });
+
+      audio.addEventListener('ended', () => {
+        label.classList.remove('playing');
+      });
+    });
+  </script>
+</body>
+</html>
