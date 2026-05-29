@@ -1,6 +1,6 @@
 <h2 align="center"> ImmersiveTTS: Environment-Aware Text-to-Speech with Multimodal Diffusion Transformer and Domain-Specific Representation Alignment </h2>
 
-<h3 align="center"> Anonymous authors </h3>
+<h3 align="center"> Jun-Hak Yun, Seung-Bin Kim and Seong-Whan Lee </h3>
 
 <img src="figure/overview.jpg" align="center" width="1000" height="450">
 Overview of ImmersiveTTS. A dual-stream MM-DiT backbone conditions the speech stream on content prompt-aligned linguistic features. At the same time, Flan-T5 token embeddings drive the environmental context stream, and CLAP embeddings modulate AdaLN for global conditioning. The model is trained with flow matching and domain-specific REPA objectives.
