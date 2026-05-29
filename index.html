@@ -7,7 +7,6 @@
 
   <style>
     :root{
-      /* 다홍/코랄 계열 포인트 컬러 */
       --accent: #ff5a5f;
       --accent-2: #ff7a7e;
       --text: #111827;
@@ -149,7 +148,7 @@
     /* Framework image placeholder */
     .figure{
       border-radius: var(--radius);
-      border: 1px solid var(--border);   /* dashed -> solid로 바꿈 (원하면 dashed로 유지해도 됨) */
+      border: 1px solid var(--border);   
       background: #fff;
       padding: 14px;
       overflow: hidden;
@@ -284,44 +283,44 @@
     .sample-meta{
       margin: 0 0 6px;
       font-size: 12px;
-      color: #111827; /* 기본 검은색, 얇게 */
-      font-weight: 400; /* 얇게 */
+      color: #111827; 
+      font-weight: 400; 
       line-height: 1.5;
     }
     .sample-meta .meta-label{
-      font-weight: 600 !important; /* 라벨만 굵게 */
+      font-weight: 600 !important;
       display: inline-block;
     }
     
-    /* 텍스트 부분은 확실히 얇고 검은색으로 유지 */
+
     .sample-meta {
       color: #111827 !important;
       font-weight: 400 !important;
     }
     
-    /* Transcription과 Environment Description 라벨 색상 */
+
     /* Environment-Aware TTS */
     #task-envtts .sample-card > p.sample-meta:nth-of-type(2) .meta-label{
-      color: #3b82f6 !important; /* Transcription 라벨 - 파란색 */
+      color: #3b82f6 !important; 
     }
     #task-envtts .sample-card > p.sample-meta:nth-of-type(3) .meta-label{
-      color: #22c55e !important; /* Environment Description 라벨 - 초록색 */
+      color: #22c55e !important; 
     }
     
-    /* Text-to-Speech (Transcription만 있음) */
+
     #task-tts .sample-card > p.sample-meta:nth-of-type(2) .meta-label{
-      color: #3b82f6 !important; /* Transcription 라벨 - 파란색 */
+      color: #3b82f6 !important; 
     }
     
-    /* REPA Analysis (Transcription, Environment Description 모두 있음) */
+
     #task-repa .sample-card > p.sample-meta:nth-of-type(2) .meta-label{
-      color: #3b82f6 !important; /* Transcription 라벨 - 파란색 */
+      color: #3b82f6 !important; 
     }
     #task-repa .sample-card > p.sample-meta:nth-of-type(3) .meta-label{
-      color: #22c55e !important; /* Environment Description 라벨 - 초록색 */
+      color: #22c55e !important; 
     }
 
-    /* Audio rows (placeholders) */
+
     .audio-grid{
       display:grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -415,7 +414,7 @@
       </div>
 
       <figure class="figure">
-        <img src="img/overview.png" alt="Model framework overview">
+        <img src="img/overview_.jpg" alt="Model framework overview">
         <figcaption class="figcaption">
           Figure 1: Overview of ImmersiveTTS. A dual-stream MM-DiT backbone conditions the speech stream on content prompt-aligned linguistic features. At the same time, Flan-T5 token embeddings drive the environmental context stream, and CLAP embeddings modulate AdaLN for global conditioning. The model is trained with flow matching and domain-specific REPA objectives.
         </figcaption>
@@ -812,7 +811,6 @@
   </div>
 
   <script>
-    // 버튼 클릭 → 해당 섹션으로 스크롤 + 버튼 active 표시
     const btns = Array.from(document.querySelectorAll('.task-btn'));
 
     function setActive(targetId){
@@ -830,7 +828,6 @@
       });
     });
 
-    // URL hash로 들어오면 해당 버튼 active
     function syncFromHash(){
       const h = (location.hash || '').replace('#','');
       if (!h) return;
@@ -841,7 +838,6 @@
     window.addEventListener('hashchange', syncFromHash);
     syncFromHash();
 
-    // 오디오 재생 중 bullet 색상 변경
     const audioElements = document.querySelectorAll('audio');
     audioElements.forEach(audio => {
       const label = audio.closest('.audio-item')?.querySelector('.audio-label');
